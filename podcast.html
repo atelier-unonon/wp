@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ポッドキャスト | アトリエ うののん</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="icon.png">
+</head>
+<body>
+<div class="topbar"><a href="index.html">HOME</a><a href="profile.html">PROFILE</a><a href="order.html">ORDER</a><a href="price.html">PRICE</a><a href="blog.html">BLOG</a><a href="podcast.html">PODCAST</a><a href="music.html">MUSIC</a></div>
+
+<style>.pcard{cursor:default}.pcard audio{width:100%;margin-top:12px}.pcard .ph{overflow:hidden}.pcard .ph img{width:100%;height:100%;object-fit:cover}.ph.r11{aspect-ratio:1/1}.ph.r169{aspect-ratio:16/9}.ph.r34{aspect-ratio:3/4}.pcard .dl{margin:10px 0 2px;font-size:13px}.pcard .dl a{color:var(--lav-d)}.hero .photo.pod{background-position:center 18%}@media(max-width:640px){.hero .photo.pod{height:100vw;max-height:430px;background-position:center 22%}}.hero .catch code{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);color:#fff}</style>
+<section class="hero">
+<div class="photo pod" style="background-image:url('podcast.jpg')"></div>
+<div class="panel">
+<div class="catch">
+<p style="font-size:22px;letter-spacing:.3em">PODCAST</p>
+<p>AIのもんがお届けする「もんの369ラジオ」と、<br>DJちほこの「楽曲の物語ラジオ」。</p>
+<p>再生ボタンを押すと、そのまま聴けます。<br>新しい回から順に並んでいます。</p>
+<p>ポッドキャストアプリで購読される場合は、<br>下のアドレスをアプリに登録してください。</p>
+<p><code style="word-break:break-all">https://muse.ai/podcasts/feed/1402929126233702/1739a0cb-0b49-48ad-8c39-cf3c93aa450e</code></p>
+</div>
+</div>
+</section>
+<main>
+<div class="cards" id="cards"><div class="card pcard"><div class="day">23</div><div class="mon">Nov. 2026</div><div class="ph r34"><img src="hero.jpg" alt=""></div><div class="t">言霊の語り 第2回「369という数字について」</div><div class="ex">言霊のマガジンから、もんの語りでお届けします。</div><audio controls preload="metadata" src="ep_kotodama02.mp3"></audio><p class="dl"><a href="podcast://muse.ai/podcasts/feed/1402929126233702/1739a0cb-0b49-48ad-8c39-cf3c93aa450e" target="_blank" rel="noopener">ポッドキャストで聞く</a></p></div><div class="card pcard"><div class="day">22</div><div class="mon">Nov. 2026</div><div class="ph r11"><img src="hero.jpg" alt=""></div><div class="t">言霊の語り 第1回「デザインとは何か」</div><div class="ex">言霊のマガジンから、もんの語りでお届けします。</div><audio controls preload="metadata" src="ep_kotodama01.mp3"></audio><p class="dl"><a href="podcast://muse.ai/podcasts/feed/1402929126233702/1739a0cb-0b49-48ad-8c39-cf3c93aa450e" target="_blank" rel="noopener">ポッドキャストで聞く</a></p></div><div class="card pcard"><div class="day">22</div><div class="mon">Nov. 2026</div><div class="ph r169"><img src="podcast.jpg" alt=""></div><div class="t">楽曲の物語ラジオ 第1回</div><div class="ex">DJちほこがウォルター・パープルの楽曲を紹介する番組です。</div><p class="dl"><a href="https://www.youtube.com/watch?v=pYZLqvSIu7s">YouTubeで聴く</a></p></div><div class="card pcard"><div class="day">22</div><div class="mon">Nov. 2026</div><div class="ph r34"><img src="mon.jpg" alt=""></div><div class="t">もんの369ラジオ 第1回「はじめまして、もんです」</div><div class="ex">もんの自己紹介の回です。</div><audio controls preload="metadata" src="ep_mon01.mp3"></audio><p class="dl"><a href="podcast://muse.ai/podcasts/feed/1402929126233702/1739a0cb-0b49-48ad-8c39-cf3c93aa450e" target="_blank" rel="noopener">ポッドキャストで聞く</a></p></div></div>
+</main>
+
+<script>
+(function(){
+  var box = document.getElementById('cards');
+  if(!box) return;
+  var cards = Array.prototype.slice.call(box.children);
+  var armed = false;
+  function armReveal(){
+    if(armed) return; armed = true;
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            var idx = cards.indexOf(e.target);
+            setTimeout(function(){ e.target.classList.add('in'); }, (idx % 6) * 90);
+            io.unobserve(e.target);
+          }
+        });
+      }, {rootMargin: '0px 0px -6% 0px'});
+      cards.forEach(function(card){ io.observe(card); });
+    } else {
+      cards.forEach(function(card, idx){
+        setTimeout(function(){ card.classList.add('in'); }, 90 + idx * 90);
+      });
+    }
+  }
+  function layout(){
+    var n = window.innerWidth >= 1150 ? 5 : window.innerWidth >= 900 ? 4 : window.innerWidth >= 640 ? 3 : window.innerWidth >= 340 ? 2 : 1;
+    box.innerHTML = '';
+    var cols = [], heights = [];
+    for(var i=0;i<n;i++){ var c = document.createElement('div'); c.className='col'; box.appendChild(c); cols.push(c); heights.push(0); }
+    cards.forEach(function(card){
+      var k = 0; for(var i=1;i<n;i++) if(heights[i] < heights[k]) k = i;
+      cols[k].appendChild(card); heights[k] = cols[k].offsetHeight;
+    });
+    armReveal();
+  }
+  var t; window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(layout, 150); });
+  window.addEventListener('load', layout);
+  layout();
+})();
+</script>
+
+
+<footer>アトリエ うののん<br>このサイトは Ameba Ownd から引っ越しました</footer>
+<script>document.querySelectorAll('a[href^="http"],a[href^="podcast:"]').forEach(function(a){a.target='_blank';a.rel='noopener'})</script>
+</body>
+</html>
