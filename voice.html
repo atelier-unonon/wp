@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VOICE | Walter Purple</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="icon.png">
+</head>
+<body>
+<div class="topbar"><a href="index.html">HOME</a><a href="profile.html">PROFILE</a><a href="order.html">ORDER</a><a href="price.html">PRICE</a><a href="blog.html">BLOG</a><a href="podcast.html">PODCAST</a><a href="voice.html">VOICE</a><a href="music.html">MUSIC</a></div>
+
+<style>.pcard{cursor:default}.pcard audio{width:100%;margin-top:12px}.pcard .ph{overflow:hidden}.pcard .ph img{width:100%;height:100%;object-fit:cover}.ph.r11{aspect-ratio:1/1}.ph.r169{aspect-ratio:16/9}.ph.r34{aspect-ratio:3/4}.pcard .dl{margin:10px 0 2px;font-size:13px}.pcard .dl a{color:var(--lav-d)}.voicehero{width:100%;display:block}.voiceintro{max-width:820px;margin:26px auto 4px;padding:0 18px;text-align:center;color:var(--lav-d);line-height:1.9}</style>
+<img class="voicehero" src="voice_header.jpg" alt="わたくしの言霊を 受け取ってください・・・">
+<p class="voiceintro">ウォルター・パープル本人の声でお届けする、言霊の語りです。<br>随筆や言霊の文章をもとに、わたくし自身の言葉で語ります。<br>再生ボタンを押すと、そのまま聴けます。新しい回から順に並んでいます。</p>
+<main>
+<div class="cards" id="cards"><div class="card pcard"><div class="day">26</div><div class="mon">Nov. 2026</div><div class="ph r169"><img src="voice_ep01.jpg" alt=""></div><div class="t">VOICE 第1回「挨拶について」</div><div class="ex">随筆「挨拶について」をもとに、挨拶と上下関係、そして気遣いについて、ウォルター・パープル本人の声で語ります。</div><audio controls preload="metadata" src="voice_ep01.mp3"></audio><p class="dl"><a href="voice_ep01.mp3">ダウンロード</a></p></div></div>
+</main>
+
+<script>
+(function(){
+  var box = document.getElementById('cards');
+  if(!box) return;
+  var cards = Array.prototype.slice.call(box.children);
+  var armed = false;
+  function armReveal(){
+    if(armed) return; armed = true;
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            var idx = cards.indexOf(e.target);
+            setTimeout(function(){ e.target.classList.add('in'); }, (idx % 6) * 90);
+            io.unobserve(e.target);
+          }
+        });
+      }, {rootMargin: '0px 0px -6% 0px'});
+      cards.forEach(function(card){ io.observe(card); });
+    } else {
+      cards.forEach(function(card, idx){
+        setTimeout(function(){ card.classList.add('in'); }, 90 + idx * 90);
+      });
+    }
+  }
+  function layout(){
+    var n = window.innerWidth >= 1150 ? 5 : window.innerWidth >= 900 ? 4 : window.innerWidth >= 640 ? 3 : window.innerWidth >= 340 ? 2 : 1;
+    box.innerHTML = '';
+    var cols = [], heights = [];
+    for(var i=0;i<n;i++){ var c = document.createElement('div'); c.className='col'; box.appendChild(c); cols.push(c); heights.push(0); }
+    cards.forEach(function(card){
+      var k = 0; for(var i=1;i<n;i++) if(heights[i] < heights[k]) k = i;
+      cols[k].appendChild(card); heights[k] = cols[k].offsetHeight;
+    });
+    armReveal();
+  }
+  var t; window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(layout, 150); });
+  window.addEventListener('load', layout);
+  layout();
+})();
+</script>
+
+
+<footer>Walter Purple<br>369の世を、歌とことばで</footer>
+<script>document.querySelectorAll('a[href^="http"],a[href^="podcast:"]').forEach(function(a){a.target='_blank';a.rel='noopener'})</script>
+</body>
+</html>
